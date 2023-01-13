@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "cd jace-front && npm run dev",
-    "postinstall": "npm run _build",
+    "postinstall": "git clone https://github.com/SparrowAcst/jace-dps.git && cd jace-dps && npm install && cd .. && git clone https://github.com/SparrowAcst/jace-front.git && cd jace-front && npm install && cd .. && npm run _build",
     "_build": "cd jace-front && npm run _build"
   },
   "author": "",
@@ -25,6 +25,7 @@
     "express-unless": "^0.5.0",
     "jace-mark": "github:boldak/jace-mark",
     "js-yaml": "^4.1.0",
+    "json2csv": "^5.0.7",
     "lodash": "^4.17.21",
     "mongoose": "^5.11.14",
     "mongoose-findorcreate": "^3.0.0",
