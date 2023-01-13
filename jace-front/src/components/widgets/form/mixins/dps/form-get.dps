@@ -1,0 +1,8 @@
+// get form by id
+// $scope.form is param of script (  form id )
+// returns form
+
+service.mongodb.aggregate(
+    from:<? "dj-storage.form" ?>,
+    query: <? [{$match:{id: $scope.form}}] ?>
+)

@@ -1,0 +1,200 @@
+// answer-export.dps
+// export responses by form id 
+// $scope.form is param of script (  form id )
+// returns url for responses downloading
+
+ 
+service.mongodb.aggregate(
+    from:"dj-storage.answer",
+    query: <? [
+          {
+            '$match': {
+              'form': $scope.form
+            }
+          }, {
+            '$sort': {
+              'updatedAt': -1
+            }
+          }
+        ]
+    ?>
+)
+
+set("responses")
+
+
+service.mongodb.aggregate(
+    from:"dj-storage.form",
+    query: <? [
+          {
+            '$match': {
+              'id': $scope.form
+            }
+          }
+        ]
+    ?>
+)
+
+set("form")
+
+
+<?javascript
+    $scope.form = $scope.form[0]
+    
+    
+    $scope.responses = $scope.responses.map( (r, index) => ({
+        response_id: r.id
+        ,form: r.form
+        ,access: r.updatedAt
+        ,respondent_id: (r.user.id) ? r.user.id : null
+        ,respondent_apikey: (r.user.apikey) ? r.user.apikey : null
+        ,respondent_index: (!r.user.id && !r.user.apikey) ? index : null
+        ,data: r.data
+    }));
+    
+    
+    
+    let rawData = []
+    $scope.responses.forEach( r => {
+        if(r.data)
+            r.data.forEach( q => {
+                let q_desc = _.find($scope.form.config.questions, qd => qd.id == q.id)
+                rawData.push({
+                     response_id: r.response_id
+                    ,response_valid: r.response_valid
+                    ,form: r.form
+                    ,access: r.access
+                    ,respondent_id: r.respondent_id
+                    ,respondent_apikey: r.respondent_apikey
+                    ,respondent_index: r.respondent_index
+                    ,question_id: q.id
+                    ,question_type: q.type
+                    ,question_required: (q_desc) ? q_desc.options.required : null
+                    ,response_valid: q.valid
+                    ,question_title: (q_desc) ? q_desc.options.title : null
+                    ,question_note: (q_desc) ? q_desc.options.note : null
+                    ,data: q.data
+                })          
+            })
+    })
+    
+    rawData = rawData.filter( 
+        r => _.find($scope.form.config.questions, qd => r.question_id == qd.id)
+    );
+    
+    let rawData1 = []
+    
+    rawData.forEach( r => {
+        r.data.forEach( d => {
+            
+            let conf = _.find($scope.form.config.questions, q => q.id == r.question_id)
+            
+            let nominal = null;
+            let entity_1 = null;
+            let entity_2 = null;
+            let factor = null;
+            let effect = null;
+            let value = null;
+            let min = null;
+            let max = null;
+            let nominal_title = null;
+            let entity_1_title = null;
+            let entity_2_title = null;
+            let factor_title = null;
+            let effect_title = null;
+            let value_title = null;
+            let v;
+            
+            switch (r.question_type) {
+              
+                case 'One of many selection' : 
+                case 'Many of many selection' : 
+                    let n = _.find(conf.options.nominals, n => n.id == d)
+                
+                    nominal = d;
+                    nominal_title = n.title
+                    value = true;
+                    break
+              
+                case 'Association' : 
+                    let e1 = _.find(conf.options.entities, n => n.id == d.e1)
+                    let e2 = _.find(conf.options.entities, n => n.id == d.e2)
+                    v = conf.options.scale[d.value-1]
+                    entity_1 = d.e1;
+                    entity_1_title = e1.title
+                    entity_2 = d.e2;
+                    entity_2_title = e2.title
+                    value = d.value;
+                    value_title = (v) ? (v.title) ? v.title : null : null
+                    break
+                    
+                case 'Influence' : 
+                    let f = _.find(conf.options.factors, n => n.id == d.e1)
+                    let e = _.find(conf.options.effects, n => n.id == d.e2)
+                    v = conf.options.scale[d.value-1]
+                    
+                    factor = d.e1;
+                    factor_title = f.title
+                    effect = d.e2;
+                    effect_title = e.title
+                    value = d.value;
+                    value_title = (v) ? (v.title) ? v.title : null : null
+                    break
+                    
+                case 'Range':
+                    min = d[0];
+                    max = d[1];
+                    value = true;
+                    break
+                    
+                case 'Date':
+                    value = d
+                    break    
+                
+                case 'Rate':
+                    v = conf.options.scale[d-1]
+                    value = d
+                    value_title = v.title
+                    break
+            }
+            
+            
+            rawData1.push({
+                 response_id: r.response_id
+                ,response_valid: r.response_valid
+                ,form: r.form
+                ,access: r.access
+                ,respondent_id: r.respondent_id
+                ,respondent_apikey: r.respondent_apikey
+                ,respondent_index: r.respondent_index
+                ,question_id: r.question_id
+                ,question_type: r.question_type
+                ,question_required: r.question_required
+                ,question_valid: r.question_valid
+                ,question_title: r.question_title
+                ,question_note: r.question_note
+                ,nominal 
+                ,nominal_title
+                ,entity_1
+                ,entity_1_title
+                ,entity_2
+                ,entity_2_title
+                ,factor
+                ,factor_title
+                ,effect
+                ,effect_title
+                ,min
+                ,max
+                ,value
+                ,value_title
+                
+            })
+        })
+    })
+    
+    $scope.rawData = rawData1.filter(r => r.value != null)
+    $scope.filename = $scope.form.id + "_" + _util.format.date(new Date(),"YYYY_MM_DD_HH_mm") + "_responses.xlsx";
+    
+?>
+get("rawData")
+export({{filename}})

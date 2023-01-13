@@ -1,0 +1,90 @@
+{
+		"template":{
+			"cols": [
+				{
+					"type": "icon",
+					"decoration": {
+						"name": "mdi-pen",
+						"style": "width:20px;",
+						"color": "secondary lighten-3"
+					}
+				},
+				{
+					"type": "ref",
+					"data": {
+						"value": "{{options.data[$rowIndex].name}}",
+						"event": "select-row"
+					},
+					"decoration": {
+						"classes": "pa-0"
+					}
+				},
+				{
+					"type": "icon",
+					"decoration": {
+						"name": "mdi-label",
+						"style": "width:20px; ",
+						"color": "{{options.data[$rowIndex].color}}"
+					}
+				},
+				{
+					"type": "note",
+					"data": {
+						"value": "{{options.data[$rowIndex].label}}"
+					},
+					"decoration": {
+						"classes": "pa-0"
+					}
+				},
+				{
+					"type": "icon",
+					"decoration": {
+						"name": "mdi-vector-selection",
+						"style": "width:20px;",
+						"color": "secondary lighten-3"
+					},
+					"selected": false
+				},
+				{
+					"type": "note",
+					"data": {
+						"value": "{{options.data[$rowIndex].selection}}"
+					},
+					"decoration": {
+						"classes": "pa-0"
+					}
+				},
+				{
+					"type": "icon",
+					"decoration": {
+						"name": "mdi-label-multiple-outline",
+						"style": "width:20px;",
+						"color": "secondary lighten-3"
+					},
+					"selected": false
+				},
+				{
+					"type": "note",
+					"data": {
+						"value": "{{options.data[$rowIndex].nestedIn}}"
+					},
+					"decoration": {
+						"classes": "pa-0"
+					}
+				},
+				{
+					"type": "button",
+					"decoration": {
+						"text": true,
+						"dense": true,
+						"icon": "mdi-pen-remove",
+						"color": "error lighten-1",
+						"style": "text-align:right !important"
+					}
+				}
+			],
+			"decoration": {
+				"style": "border-bottom:1px solid"
+			}
+		}
+	}

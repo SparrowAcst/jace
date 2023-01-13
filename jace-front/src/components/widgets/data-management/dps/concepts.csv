@@ -1,0 +1,14 @@
+id;concept;type;measure;name;description;unique;value_format;display_format;collection;filter
+;country;entity;;Country;;;;;country;
+;country.name;string;;Name;;true;;;;
+;country.iso3166_1_alpha2;string;;ISO-2;;true;;;;
+;country.iso3166_1_alpha3;string;;ISO-3;;true;;;;
+;country.longetude;number;;LONG;;;;;;
+;country.latitude;number;;LAT;;;;;;
+;country.income_level;string;;Income level;;;;;;
+;low_income_countries;entity_set;;Low income countries;;;;;country;"item => item.income_level == ""low_income"""
+;gini;measure;;Gini index;;;;;;
+;country_gini;datapoint;;Gini index Data;;;;;gini_dp;
+;country_gini.country;reference;;Country;;;;;country;iso3166_1_alpha3
+;country_gini.year;time;;Year;;;YYYY;YYYY;;
+;country_gini.gini;number;gini;Gini Index;;;;;;

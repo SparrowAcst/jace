@@ -1,0 +1,23 @@
+// get answers by form id and user info
+// $scope.form is param of script (  form id )
+// $scope.user is param of script (  user profile )
+// returns selected answers
+
+service.mongodb.aggregate(
+    from:<? "dj-storage.answer" ?>,
+    query: <? [
+            {
+                '$match': {
+                    'form': $scope.form, 
+                    'user.email': $scope.user.email
+                }
+            }, {
+                '$sort': {
+                    'updatedAt': -1
+                }
+            }
+        ]
+    ?>    
+)
+set("response")
+return("response[0]")

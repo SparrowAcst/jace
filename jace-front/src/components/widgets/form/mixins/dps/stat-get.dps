@@ -1,0 +1,66 @@
+// get statistics by form id 
+// $scope.form is param of script (  form id )
+// returns selected statistics
+
+service.mongodb.aggregate(
+    from:"dj-storage.answer",
+    query: <? [
+          {
+            '$match': {
+              'form': $scope.form
+            }
+          }, {
+            '$sort': {
+              'updatedAt': -1
+            }
+          }
+        ]
+    ?>
+)
+
+set("responses")
+
+
+service.mongodb.aggregate(
+    from:"dj-storage.form",
+    query: <? [
+          {
+            '$match': {
+              'id': $scope.form
+            }
+          }
+        ]
+    ?>
+)
+
+set("form")
+
+
+<?javascript
+    $scope.form = $scope.form[0]
+    
+    $scope.stat = { events: {
+        total: $scope.responses.length,
+        range: {
+          min: (_.first($scope.responses)) ? _.first($scope.responses).updatedAt : new Date(),
+          max: (_.last($scope.responses)) ? _.last($scope.responses).updatedAt : new Date()
+        },
+        timeline: $scope.responses.map( r => ({
+                        user: r.user,
+                        date: r.updatedAt
+                    }))
+    }};
+    
+    let questions = $scope.form.config.questions;
+
+    $scope.stat.questions = questions.map( q => ({
+        id: q.id,
+        responses: $scope.responses.map( r => {
+            let f = _.find(r.data, a => a.id == q.id) 
+            return (f) ? (f.data) ? f.data : null : null
+        })
+    }))
+
+?>
+
+return("stat")

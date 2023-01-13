@@ -1,0 +1,36 @@
+// extends existed form 
+// $scope.form is param of script (  full form specification )
+// returns extended form
+
+service.mongodb.find(
+    from:<? "dj-storage.form" ?>,
+    query: <? [{$match:{id: $scope.form.id}}] ?>
+)
+
+set("baseForm")
+
+
+<?javascript
+    $scope.baseForm = $scope.baseForm[0] 
+    if($scope.form.config.questions && $scope.baseForm.config.questions){
+        $scope.form.config.questions.forEach( q => {
+            baseQ = _.find($scope.baseForm.config.questions, bq => bq.id == q.id)
+            if( baseQ && baseQ.options.nominals){
+                q.options.nominals = (q.options.nominals || []).concat(baseQ.options.nominals)
+                q.options.nominals = _.unique(q.options.nominals,'id') 
+            }
+        })    
+    }
+    
+?>
+
+service.mongodb.replace(
+    in: <? "dj-storage.form" ?>,
+    where : <? {id: $scope.form.id}?>,
+    doc: <? $scope.form ?>
+)
+
+service.mongodb.find(
+    from:<? "dj-storage.form" ?>,
+    query: <? [{$match:{id: $scope.form.id}}] ?>
+)

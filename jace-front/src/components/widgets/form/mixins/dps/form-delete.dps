@@ -1,0 +1,17 @@
+// delete form by id
+// $scope.form is param of script (  form id )
+// returns deleted form
+
+service.mongodb.aggregate(
+    from:<? "dj-storage.form" ?>,
+    query: <? [{$match:{id: $scope.form}}] ?>
+)
+
+set("res")
+
+service.mongodb.remove(
+    from: <? "dj-storage.form" ?>,
+    where: <? {id: $scope.form} ?>
+)
+
+return("res")

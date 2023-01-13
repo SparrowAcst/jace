@@ -1,0 +1,31 @@
+// answer-load-stat.dps
+// get statistics by form id 
+// $scope.form is param of script (  form id )
+// returns selected statistics
+
+ service.mongodb.aggregate(
+    from:"dj-storage.answer",
+    query: <? [
+          {
+            '$match': {
+              'form': $scope.form
+            }
+          }, {
+            '$sort': {
+              'updatedAt': 1
+            }
+          }
+        ]
+    ?>
+)
+
+set("answers")
+
+<?javascript
+    $scope.answers = $scope.answers.map( item => ({
+        date:item.updatedAt,
+        v:1
+    }))
+?>
+
+return("answers")

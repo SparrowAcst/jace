@@ -1,0 +1,8 @@
+// update answers 
+// $scope.answer is param of script (  full answers specification )
+
+service.mongodb.replace(
+    in: <? "dj-storage.answer" ?>,
+    where : <? {id: $scope.answer.id}?>,
+    doc: <? $scope.answer ?>
+)

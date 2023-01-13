@@ -1,0 +1,64 @@
+[
+	{
+		"name":"text"
+	},
+	{
+		"name":"paragraph"
+	},
+	{
+		"name":"sentence"
+	},
+	{
+		"name":"subSentence"
+	},
+	{
+		"name":"word",
+		"selection":["bundly"]
+	},
+	{
+		"name":"number",
+		"selection":["bundly"]
+	},
+	{
+		"name":"whitespace"
+	},
+	{
+		"name":"punctuation"
+	},
+	{
+		"name":"ORGANOZATION",
+		"nestedIn": [
+				"subSentence"
+		],
+		"selection":["singly", "wrap"],
+		"label":"ORG",
+		"color":"#ffecb3"
+	},
+	{
+		"name":"PERSON",
+		"nestedIn": [
+				"subSentence"
+		],
+		"selection":["singly", "wrap"],
+		"label":"PERS",
+		"color":"#dcedc8"
+	},
+	{
+		"name":"LOCATION",
+		"nestedIn": [
+				"subSentence"
+		],
+		"selection":["singly", "wrap"],
+		"label":"LOG",
+		"color":"#dcedc8"
+	},
+	{
+		"name":"DATE",
+		"nestedIn": [
+				"subSentence"
+		],
+		"selection":["singly", "wrap"],
+		"label":"DATE",
+		"color":"#4dd0e1"
+	}
+]

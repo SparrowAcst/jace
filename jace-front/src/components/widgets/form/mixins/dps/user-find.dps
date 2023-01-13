@@ -1,0 +1,4 @@
+// find user by email 
+// $scope.email is param of script 
+
+profile.find(<? $scope.email ?>)

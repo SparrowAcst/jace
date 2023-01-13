@@ -1,0 +1,112 @@
+
+Economic Dimension index,33.3
+,Global competitiveness,50
+,,Stimulants efficiency,50 
+,,,Market size,20 
+,,,,Domestic credit to private sector,30 
+,,,,Import volume index,30 
+,,,,Household final consumption expenditure,40 
+,,,The level of financial market development,20 
+,,,,External debt stocks,50 
+,,,,Deposit interest rate,50 
+,,,Technological readiness,20 
+,,,,Technical cooperation grants,50 
+,,,,High-technology exports,50 
+,,,Labor market efficiency,20 
+,,,,GDP per person employed,50 
+,,,,Employment to population ratio,50 
+,,,Effectiveness of goods and services,20 
+,,,,Exports of goods and services,40 
+,,,,Imports of goods and services,40 
+,,,,Market capitalization of listed companies,20 
+,,Basic requirements,40 
+,,,Macroeconomic Environment,50 
+,,,,Foreign direct investment,20 
+,,,,Portfolio Investment,40 
+,,,,Total reserves,40 
+,,,Infrastructure,50 
+,,,,Agriculture,20 
+,,,,Industry,30 
+,,,,GDP per capita,50 
+,,,Innovations,10 
+,,,,Patent apps,30 
+,,,,Technicians in R&D,40 
+,,,,Charges for the use of intellectual property payments,30 
+,Economic freedom,50 
+,,Rule of Law,25 
+,,,Property rights,8 
+,,,Government integrity,8 
+,,,Judicial effectiveness,8 
+,,Government Size,25 
+,,,Government spending,8 
+,,,Tax burden,8 
+,,,Fiscal heath,8 
+,,Regulatory Efficiency,25 
+,,,Business freedom,8 
+,,,Labor freedom,8 
+,,,Monetary freedom,8 
+,,Open markets,25 
+,,,Trade freedom,8 
+,,,Investment freedom,8 
+,,,Financial freedom,8 
+
+Social Dimension index,33.3
+,Health wellness and basics needs,20 
+,,The number of people per doctor,11.1 
+,,Hospital beds,11.1 
+,,The infant mortality rate,11.1 
+,,Life expectancy,11.1 
+,,Health expenditure,11.1 
+,,Prevalence of undernourishment,11.1 
+,,Depth of the food deficit,11.1 
+,,Maternal mortality ratio,11.1 
+,,Mortality rate,11.1 
+,Education,20 
+,,Literacy rate,20 
+,,School enrollment,20 
+,,School enrollment secondary,20 
+,,School enrollment tertiary,20 
+,,Public spending on education,20
+,Personal rights and freedom,15  
+,,Freedom of speech,100
+,Personal safety,15 
+,,Intentional homicides,50 
+,,Political terror,50 ,
+,Corruption perception,20 
+,Social Infrastructure,10 
+,,Mobile cellular subscriptions,12.5 
+,,Internet users,12.5 
+,,Telephones,12.5 
+,,Vehicles,12.5 
+,,Number of airports,12.5 
+,,Navigable waterways,12.5 
+,,Paved highways,12.5 
+,,Rail lines,12.5 
+
+Ecological Dimension Index,33.3
+,Environmental Heath,50 
+,,Health Impacts,33  
+,,,Environmental risk exposure Air Quality,33  
+,,Air Quality,33
+,,,Household air quality,30 
+,,,Air pollution,70 
+,,Water & Sanitation,33  
+,,,Unsafe drinking water,50 
+,,,Unsafe sanitation,50 
+,Ecosystem Vitality,50 
+,,Climate & Energy,25  
+,,,Trend in carbon intensity,100
+,,Biodiversity & Habitat,25 
+,,,Species protection,40 
+,,,Terrestrial biome protection,40 
+,,,Marine protected areas,20 
+,,Fisheries,5  
+,,,Fish stocks,100
+,,Forests,10  
+,,,Tree cover loss,100
+,,Agriculture,10 
+,,,Nitrogen balance,50 
+,,,Nitrogen use efficiency,50 
+,,Water resources,25  
+,,,Water threatment,100
+

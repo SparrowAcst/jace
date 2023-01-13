@@ -1,0 +1,34 @@
+// create or replace form
+// $scope.form is param of script ( full form specification )
+// returns created form
+
+client();
+set("owner")
+
+<?javascript
+    $scope.form = {
+        id: $scope.form.id,
+        metadata: $scope.form.metadata,
+        config: $scope.form.config,
+        owner: $scope.owner.client.user,
+        history: [
+            {
+                state:"created",
+                message:"Create form via "+$scope.owner.client.app,
+                user: $scope.owner.client.user,
+                date: new Date()
+            }
+        ]
+    }
+?>
+
+service.mongodb.replace (
+    in: <? "dj-storage.form" ?>,
+    where : <? {id: $scope.form.id}?>,
+    doc: <? $scope.form ?>
+)
+
+service.mongodb.aggregate (
+    from:<? "dj-storage.form" ?>,
+    query: <? [{$match:{id: $scope.form.id}}] ?>,
+)

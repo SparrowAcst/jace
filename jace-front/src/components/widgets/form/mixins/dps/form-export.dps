@@ -1,0 +1,6 @@
+// export form as json
+// $scope.form is param of script (  full form specification )
+// returns url for json downloading
+
+get("form")
+export("formExport.json")
