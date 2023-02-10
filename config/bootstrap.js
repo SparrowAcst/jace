@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const CORS = require("cors")
+const { sseMiddleware } = require('express-sse-middleware')
 const cookieParser = require('cookie-parser')
 const fileUpload = require('express-fileupload');
 const mongoose = require('mongoose');
@@ -162,6 +163,8 @@ const FileStore = require('session-file-store')(session);
     app.use(passport.session())
 
     app.use(CORS())
+    app.use(sseMiddleware)
+
 
     app.use(fileUpload({
         useTempFiles: true,
@@ -205,6 +208,11 @@ const FileStore = require('session-file-store')(session);
     app.use("/api/md",  require("../routes/api-md"))
     app.use("/api/script",  require("../jace-dps"))
     
+    const ttt = require("../sync-data")
+    app.use("/api/data",  ttt.router)
+    
+
+
     app.use("/api", require("../routes/user"))
     
 
