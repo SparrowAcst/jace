@@ -4,6 +4,7 @@ require('dotenv').config()
 module.exports = {
     portal: {
         
+
         port: process.env.PORT || 8080,
         
         auth: {
@@ -14,9 +15,16 @@ module.exports = {
         
         db: {
             uri: process.env.MONGO_URI || "mongodb://localhost:27017/dj-portal" 
-            //"mongodb+srv://jace:jace@ade-spa.3irxljv.mongodb.net/dj-portal?retryWrites=true&w=majority"
-            // "mongodb+srv://jace:jace@cluster0.3hhdg.mongodb.net/dj-portal?retryWrites=true&w=majority"
         },
+
+        plugins: {
+            
+            "/api/md": require("../routes/api-md"),
+            "/api/script": require("../jace-dps"),
+            "/api/data": require("../sync-data").router
+        
+        },
+
 
         indexPath: ".tmp/public/index.html",
         staticPath: ".tmp/public",

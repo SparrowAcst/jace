@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 const passport = require('passport')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
-const { extend } = require("lodash")
+const { extend, keys } = require("lodash")
 const YAML = require("js-yaml")
 
 
@@ -113,6 +113,14 @@ let configureServer = () => {
 
 
 
+const loadPlugins = app => {
+  keys(config.portal.plugins).forEach( route => {
+    console.log(`** Load plugin: ${route}`)
+    app.use(route,  config.portal.plugins[route])
+  })
+}
+
+
 
 module.exports = () => {
     var app = express();
@@ -205,11 +213,15 @@ const FileStore = require('session-file-store')(session);
     app.use("/api/resource", require("../routes/resource"))
     app.use("/api/app/config", require("../routes/portal-config"))
     app.use("/api/app", require("../routes/app-config"))
-    app.use("/api/md",  require("../routes/api-md"))
-    app.use("/api/script",  require("../jace-dps"))
     
-    const ttt = require("../sync-data")
-    app.use("/api/data",  ttt.router)
+
+    loadPlugins(app)
+
+    // app.use("/api/md",  require("../routes/api-md"))
+    // app.use("/api/script",  require("../jace-dps"))
+    
+    // const ttt = require("../sync-data")
+    // app.use("/api/data",  ttt.router)
     
 
 

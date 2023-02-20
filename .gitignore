@@ -10,7 +10,7 @@ bower_components/
 .tmp/
 jace-front/
 jace-dps/
-data-sync/
+sync-data/
 
 # Sails.js / Waterline / Grunt
 dump.rdb
