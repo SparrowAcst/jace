@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "cd jace-front && npm run dev",
-    "postinstall": "git clone https://github.com/SparrowAcst/jace-dps.git && cd jace-dps && npm install && cd .. && git clone https://github.com/SparrowAcst/jace-front.git && cd jace-front && npm install && cd .. && npm run _build",
+    "_postinstall": "git clone https://github.com/SparrowAcst/jace-dps.git && cd jace-dps && npm install && cd .. && git clone https://github.com/SparrowAcst/jace-front.git && cd jace-front && npm install && cd .. && npm run _build",
     "_build": "cd jace-front && npm run _build"
   },
   "author": "",

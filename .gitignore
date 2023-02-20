@@ -12,6 +12,9 @@ jace-front/
 jace-dps/
 sync-data/
 
+.tmp.zip
+
+
 # Sails.js / Waterline / Grunt
 dump.rdb
 
