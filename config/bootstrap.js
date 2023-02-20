@@ -174,7 +174,9 @@ const FileStore = require('session-file-store')(session);
     app.use(CORS())
     app.use(sseMiddleware)
 
-    app.use(morgan('dev'))
+    if(config.portal.useLog){
+      app.use(morgan('dev'))
+    }
     
     app.use(fileUpload({
         useTempFiles: true,
