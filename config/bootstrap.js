@@ -4,6 +4,7 @@ const CORS = require("cors")
 const { sseMiddleware } = require('express-sse-middleware')
 const cookieParser = require('cookie-parser')
 const fileUpload = require('express-fileupload');
+const morgan = require("morgan");
 const mongoose = require('mongoose');
 const passport = require('passport')
 const session = require('express-session')
@@ -173,7 +174,8 @@ const FileStore = require('session-file-store')(session);
     app.use(CORS())
     app.use(sseMiddleware)
 
-
+    app.use(morgan('dev'))
+    
     app.use(fileUpload({
         useTempFiles: true,
         tempFileDir: config.portal.uploadPath,
