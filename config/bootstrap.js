@@ -10,7 +10,7 @@ const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
 const { extend, keys } = require("lodash")
 const YAML = require("js-yaml")
-
+const path = require("path")
 
 const config = require("./index")
 const STATIC_FILE_PATTERN = /\.[^.\/]*$/g
@@ -227,8 +227,8 @@ const FileStore = require('session-file-store')(session);
 
     app.use("/api", require("../routes/user"))
     
-
-    app.use(express.static(config.portal.staticPath))
+    console.log("** Use static:", path.resolve(config.portal.staticPath))
+    app.use(express.static(path.resolve(config.portal.staticPath)))
 
     return configureServer()
       .then(() => app)

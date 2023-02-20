@@ -26,9 +26,9 @@ module.exports = {
         },
 
 
-        indexPath: ".tmp/public/index.html",
-        staticPath: ".tmp/public",
-        uploadPath: ".tmp/uploads",
+        indexPath: "./.tmp/public/index.html",
+        staticPath: "./.tmp/public",
+        uploadPath: "./.tmp/uploads",
         appTemplate: require("./app-template"),
         
         administrators: [
