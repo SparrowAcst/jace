@@ -4,30 +4,60 @@ var mime = require('mime');
 var path = require('path');
 var fs = require("fs");
 
+const mongo = require("mongodb").MongoClient
 
 
+const getList = async (req, res) => {
+  
+  let client = await mongo.connect(
+      config.portal.db.uri, 
+      {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+      }
+  )
+  
+  let result = await client.db("dj-portal").collection("resource").aggregate(
+    [{
+      $project: {
+        data: 0
+      }
+    }]
+  ).toArray()
 
-
-let  getList = (req,res) => {
-    Resource.find({})
-    	.then( obj => {
-      // console.log("LIST", obj)
-      if(!obj || obj.length == 0){
-        return res.send([]);
-      } else {
-        let result = obj.map( item => ({
-          // size: (item.data) ? item.data.length() : "n/a",
+  result = result.map( item => ({
           mime: mime.lookup(path.basename(item.path)),
           ext: path.parse(item.path).ext.substring(1),
-          url: "./api/resource/"+item.path,
+          url: `./api/resource/${item.path}`,
           path: item.path,
           owner: item.owner
         }))
         
-        return res.send(result)
-      }  
-    })
-  }
+  return res.send(result)
+
+}
+
+
+// let  getList = (req,res) => {
+//     Resource.find({})
+//     	.then( obj => {
+//       // console.log("LIST", obj)
+//       if(!obj || obj.length == 0){
+//         return res.send([]);
+//       } else {
+//         let result = obj.map( item => ({
+//           // size: (item.data) ? item.data.length() : "n/a",
+//           mime: mime.lookup(path.basename(item.path)),
+//           ext: path.parse(item.path).ext.substring(1),
+//           url: "./api/resource/"+item.path,
+//           path: item.path,
+//           owner: item.owner
+//         }))
+        
+//         return res.send(result)
+//       }  
+//     })
+//   }
 
 let get = (req, res)  => {
     var resourcePath = req.params.path;

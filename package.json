@@ -28,6 +28,7 @@
     "js-yaml": "^4.1.0",
     "json2csv": "^5.0.7",
     "lodash": "^4.17.21",
+    "mongodb": "^5.0.1",
     "mongoose": "^5.11.14",
     "mongoose-findorcreate": "^3.0.0",
     "morgan": "^1.10.0",

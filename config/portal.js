@@ -13,7 +13,7 @@ module.exports = {
             callback: process.env.GOOGLE_CALLBACK || "/auth/google/callback"
         },
 
-        useLog: false,
+        useLog: true,
         
         db: {
             uri: process.env.MONGO_URI || "mongodb://localhost:27017/dj-portal" 
