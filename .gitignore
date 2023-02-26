@@ -6,7 +6,7 @@ node_modules/
 jspm_packages/
 bower_components/
 
-
+.env
 .tmp/
 jace-front/
 jace-dps/

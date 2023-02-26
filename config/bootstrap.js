@@ -213,7 +213,8 @@ const FileStore = require('session-file-store')(session);
 
     app.use('/auth', require('../routes/auth'))
     app.use('/design', require('../routes/design'))
-
+    
+    app.use('/api/default', require('../routes/default'))
     app.use("/api/resource", require("../routes/resource"))
     app.use("/api/app/config", require("../routes/portal-config"))
     app.use("/api/app", require("../routes/app-config"))
