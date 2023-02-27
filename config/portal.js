@@ -23,7 +23,8 @@ module.exports = {
             
             "/api/md": require("../routes/api-md"),
             "/api/script": require("../jace-dps"),
-            "/api/data": require("../sync-data").router
+            "/api/data": require("../sync-data").router,
+            "/api/controller": require("../harvest-controller")
         
         },
 
