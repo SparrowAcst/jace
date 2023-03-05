@@ -148,7 +148,7 @@ let PortalConfig = require("../models/PortalConfig")
 
 
 let requestHandler = (req, res, next) => {
-    
+	
     let indexFile = path.resolve(config.portal.indexPath)
     let portal
 
@@ -304,18 +304,18 @@ let requestHandler = (req, res, next) => {
 
 
                     let script = `
-                          var devService =  ${JSON.stringify(config.publicAppConfig.devService)}
-                          var user = ${JSON.stringify(config.userInfo)};
-                          var author = ${JSON.stringify(config.ownerInfo)};
-                          var appName = "${config.app.name}";
-                          var initialConfig = JSON.parse(decodeURIComponent("${encodeURIComponent(JSON.stringify(config.publicAppConfig))}"));
-                          var dpsURL = initialConfig.dpsURL;
-                          var __application_Config_Key =  "${config.publicAppConfig.id}-application-config";
-                          var __application_Mode_Key =  "${config.publicAppConfig.id}-mode";
-                          sessionStorage.setItem(__application_Config_Key, JSON.stringify(initialConfig))
+		       			  var devService = 	${JSON.stringify(config.publicAppConfig.devService)}
+		       		   	  var user = ${JSON.stringify(config.userInfo)};
+					      var author = ${JSON.stringify(config.ownerInfo)};
+					      var appName = "${config.app.name}";
+					      var initialConfig = JSON.parse(decodeURIComponent("${encodeURIComponent(JSON.stringify(config.publicAppConfig))}"));
+					      var dpsURL = initialConfig.dpsURL;
+					      var __application_Config_Key =  "${config.publicAppConfig.id}-application-config";
+						  var __application_Mode_Key =  "${config.publicAppConfig.id}-mode";
+						  sessionStorage.setItem(__application_Config_Key, JSON.stringify(initialConfig))
 
 
-               `
+		       `
                 if(keys(query).length == 0){
                     script += `
                     window["${config.app.name}_query"] = JSON.parse(localStorage.getItem("jace__${config.app.name}_query"))

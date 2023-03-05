@@ -68,7 +68,12 @@ module.exports = {
 
         // used to deserialize the user
         passport.deserializeUser((id, done) => {
-            User.findById(id, (err, user) => done(err, user))
+            try {
+                User.findById(id, (err, user) => done(err, user))
+            } catch(e){
+                console.log(e.toString())
+                done(e, null)
+            }  
         })
     }
 }
