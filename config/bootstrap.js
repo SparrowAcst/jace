@@ -116,7 +116,7 @@ let configureServer = () => {
 
 const loadPlugins = app => {
   keys(config.portal.plugins).forEach( route => {
-    console.log(`** Load plugin: ${route}`)
+    console.log(`** Load plugin: ${route}`, config.portal.plugins[route].stack.map( d => d.regexp))
     app.use(route,  config.portal.plugins[route])
   })
 }

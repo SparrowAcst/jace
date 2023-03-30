@@ -12,6 +12,7 @@ jace-front/
 jace-dps/
 harvest-controller/
 sync-data/
+report-builder/
 
 .tmp.zip
 
