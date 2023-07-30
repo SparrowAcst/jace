@@ -8,10 +8,15 @@ const morgan = require("morgan");
 const mongoose = require('mongoose');
 const passport = require('passport')
 const session = require('express-session')
+const multipart = require('connect-multiparty')
 const MongoStore = require('connect-mongo')(session)
 const { extend, keys } = require("lodash")
 const YAML = require("js-yaml")
 const path = require("path")
+
+
+const busboy = require('connect-busboy')
+
 
 const config = require("./index")
 const STATIC_FILE_PATTERN = /\.[^.\/]*$/g
@@ -178,13 +183,16 @@ const FileStore = require('session-file-store')(session);
       app.use(morgan('dev'))
     }
     
-    app.use(fileUpload({
-        useTempFiles: true,
-        tempFileDir: config.portal.uploadPath,
-        limits: {
-            fileSize: 1024 * 1024 * 1024
-        }
-    }));
+
+
+
+    // app.use(fileUpload({
+    //     useTempFiles: true,
+    //     tempFileDir: config.portal.uploadPath,
+    //     limits: {
+    //         fileSize: 1024 * 1024 * 1024
+    //     }
+    // }));
 
     app.use(bodyParser.text());
     app.use(bodyParser.urlencoded({
@@ -196,6 +204,10 @@ const FileStore = require('session-file-store')(session);
     app.use(bodyParser.json({
         limit: '50mb'
     }));
+
+    app.use(busboy())
+    
+    // app.use(multipart())
 
 
     // the sequence of middlware is important
@@ -234,7 +246,8 @@ const FileStore = require('session-file-store')(session);
     
     console.log("** Use static:", path.resolve(config.portal.staticPath))
     app.use(express.static(path.resolve(config.portal.staticPath)))
-
+    
+    
     return configureServer()
       .then(() => app)
 }

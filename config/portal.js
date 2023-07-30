@@ -22,7 +22,7 @@ module.exports = {
         plugins: {
             
             "/api/md": require("../routes/api-md"),
-            "/api/script": require("../jace-dps"),
+            // "/api/script": require("../jace-dps"),
             "/api/data": require("../sync-data").router,
             "/api/controller": require("../harvest-controller"),
             "/api/ade-report": require("../report-builder")
