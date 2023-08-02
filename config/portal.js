@@ -4,6 +4,7 @@ require('dotenv').config()
 module.exports = {
     portal: {
         
+        version: "1.0.1",
 
         port: process.env.PORT || 8080,
         

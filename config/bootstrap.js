@@ -213,6 +213,13 @@ const FileStore = require('session-file-store')(session);
     // the sequence of middlware is important
 
 
+    app.use( (req, res, next) => {
+      console.log("---------------------  ", (req.user) ? req.user.email : "anonymous",  " > ", req.path,"  --------------------")
+      next()
+    })
+
+
+
     app.use(require('../routes/design').unless({
         path: [
             { method: "GET", url: STATIC_FILE_PATTERN },
