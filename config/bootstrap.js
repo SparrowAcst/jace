@@ -214,7 +214,7 @@ const FileStore = require('session-file-store')(session);
 
 
     app.use( (req, res, next) => {
-      console.log("---------------------  ", (req.user) ? req.user.email : "anonymous",  " > ", req.path,"  --------------------")
+      console.log("-----  ", (req.user) ? `${req.user.name} (${req.user.email})` : "anonymous",  " > ", req.path,"  -----")
       next()
     })
 
