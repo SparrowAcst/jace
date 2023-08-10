@@ -10,6 +10,9 @@ const passport = require('passport')
 const session = require('express-session')
 const multipart = require('connect-multiparty')
 const MongoStore = require('connect-mongo')(session)
+const swStats = require('swagger-stats')
+
+
 const { extend, keys } = require("lodash")
 const YAML = require("js-yaml")
 const path = require("path")
@@ -218,6 +221,7 @@ const FileStore = require('session-file-store')(session);
       next()
     })
 
+    app.use(swStats.getMiddleware({/*swaggerSpec:swaggerDocument,*/ uriPath:"/metrics", name:"ADE PORTAL"}))
 
 
     app.use(require('../routes/design').unless({
