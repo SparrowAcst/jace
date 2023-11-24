@@ -14,6 +14,7 @@ harvest-controller/
 sync-data/
 report-builder/
 ade-lms/
+ade-patient-story/
 
 .tmp.zip
 
