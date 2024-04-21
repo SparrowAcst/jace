@@ -11,7 +11,7 @@ const session = require('express-session')
 const multipart = require('connect-multiparty')
 const MongoStore = require('connect-mongo')(session)
 const swStats = require('swagger-stats')
-
+const moment = require("moment")
 
 const { extend, keys } = require("lodash")
 const YAML = require("js-yaml")
@@ -217,7 +217,9 @@ const FileStore = require('session-file-store')(session);
 
 
     app.use( (req, res, next) => {
-      console.log("-----  ", (req.user) ? `${req.user.name} (${req.user.email})` : "anonymous",  " > ", req.path,"  -----")
+      console.log(`${moment(new Date()).format("DD MMM YYYY, HH:mm:ss")} ----- ${(req.user) ? req.user.name +"("+req.user.email+")" : "anonymous"} > ${req.path} -----`)
+      
+      // console.log("-----  ", (req.user) ? `${req.user.name} (${req.user.email})` : "anonymous",  " > ", req.path,"  -----")
       next()
     })
 
