@@ -131,11 +131,11 @@ const loadPlugins = app => {
 
 
 
-module.exports = () => {
+module.exports = async () => {
     var app = express();
 
 
-    mongoose.connect(config.portal.db.uri, {
+    await mongoose.connect(config.portal.db.uri, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     })
