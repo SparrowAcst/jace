@@ -13,6 +13,8 @@ const MongoStore = require('connect-mongo')(session)
 const swStats = require('swagger-stats')
 const moment = require("moment")
 
+const Events = require("./events")
+
 const { extend, keys } = require("lodash")
 const YAML = require("js-yaml")
 const path = require("path")
@@ -244,6 +246,7 @@ const FileStore = require('session-file-store')(session);
     app.use("/api/app/config", require("../routes/portal-config"))
     app.use("/api/app", require("../routes/app-config"))
     
+    app.use(Events)    
 
     loadPlugins(app)
 
