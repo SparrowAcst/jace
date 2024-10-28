@@ -8,6 +8,8 @@ bower_components/
 
 .env
 .tmp/
+.*/
+
 jace-front/
 jace-dps/
 harvest-controller/
