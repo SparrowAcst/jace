@@ -17,6 +17,7 @@ sync-data/
 report-builder/
 ade-lms/
 ade-patient-story/
+ade-clinic
 
 .tmp.zip
 
