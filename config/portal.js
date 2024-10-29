@@ -27,7 +27,7 @@ module.exports = {
             // "/api/ade-report": require("../report-builder"),
             // "/api/ade-lms": require("../ade-lms"),
             // "/api/patient-story": require("../ade-patient-story"),
-            "/api/controller": require("../ade-clinic"),
+            "/api/clinic": require("../ade-clinic"),
         },
 
 
