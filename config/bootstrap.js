@@ -15,7 +15,7 @@ const moment = require("moment")
 
 const Events = require("./events")
 
-const { extend, keys } = require("lodash")
+const { extend, keys, isObject } = require("lodash")
 const YAML = require("js-yaml")
 const path = require("path")
 
@@ -124,11 +124,19 @@ let configureServer = () => {
 
 
 
-const loadPlugins = app => {
-  keys(config.portal.plugins).forEach( route => {
-    console.log(`** Load plugin: ${route}`, config.portal.plugins[route].stack.map( d => d.regexp))
-    app.use(route,  config.portal.plugins[route])
-  })
+const loadPlugins = async app => {
+
+  const plugins = keys(config.portal.plugins)
+  
+  for(const plugin of plugins){
+    let routes = config.portal.plugins[plugin]
+    if( isObject(routes) && routes.init){
+      routes = await routes.init()
+      console.log(`** Load plugin: ${plugin}`, routes.stack.map( d => d.regexp))
+       app.use(plugin,  routes )
+    }
+  }
+
 }
 
 
@@ -248,7 +256,7 @@ const FileStore = require('session-file-store')(session);
     
     app.use(Events)    
 
-    loadPlugins(app)
+    await loadPlugins(app)
 
     // app.use("/api/md",  require("../routes/api-md"))
     // app.use("/api/script",  require("../jace-dps"))
