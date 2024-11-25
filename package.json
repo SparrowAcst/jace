@@ -17,39 +17,36 @@
     "connect-busboy": "^1.0.0",
     "connect-mongo": "^3.2.0",
     "connect-multiparty": "^2.2.0",
-    "cookie-parser": "^1.4.5",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^8.6.0",
-    "ejs": "^3.1.5",
-    "express": "^4.17.1",
-    "express-fileupload": "^1.2.1",
-    "express-session": "^1.17.1",
+    "ejs": "^3.1.10",
+    "express": "^4.21.1",
+    "express-fileupload": "^1.5.1",
+    "express-session": "^1.18.1",
     "express-sse-middleware": "^3.0.3",
     "express-unless": "^0.5.0",
     "jace-mark": "github:boldak/jace-mark",
     "js-yaml": "^4.1.0",
     "json2csv": "^5.0.7",
     "lodash": "^4.17.21",
-    "mongodb": "^5.0.1",
-    "mongoose": "^5.11.14",
+    "mongodb": "^5.9.2",
+    "mongoose": "^5.13.22",
     "mongoose-findorcreate": "^3.0.0",
     "morgan": "^1.10.0",
     "passport": "^0.4.1",
     "passport-google-oauth20": "^2.0.0",
-    "pino-abstract-transport": "^1.0.0",
+    "pino-abstract-transport": "^1.2.0",
     "prom-client": "^14.2.0",
-    "pump": "^3.0.0",
+    "pump": "^3.0.2",
     "raw-loader": "^4.0.2",
-    "readable-stream": "^4.3.0",
+    "readable-stream": "^4.5.2",
     "secure-json-parse": "^2.7.0",
     "session-file-store": "^1.5.0",
-    "simpl.db": "^2.12.1",
-    "swagger-stats": "^0.99.2"
+    "simpl.db": "^2.13.0",
+    "swagger-stats": "^0.99.7"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7"
-  },
-  "engines": {
-    "node": "10.23.x"
+    "nodemon": "^2.0.22"
   }
 }
