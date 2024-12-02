@@ -192,11 +192,23 @@ const FileStore = require('session-file-store')(session);
     app.use(CORS())
     app.use(sseMiddleware)
 
-    if(config.portal.useLog){
-      app.use(morgan('dev'))
-    }
+    // if(config.portal.useLog){
+    //   app.use(morgan('dev'))
+    // }
     
 
+    morgan.token('user', req => (req.user) ? req.user.name +"("+req.user.email+")" : "anonymous" )
+
+    if(config.portal.useLog){
+      app.use(
+        morgan(
+          ':date[iso] :method :url :status :res[content-length] - :response-time ms :user',
+          {
+            skip: req => /\/js\/|\/api\/resource\/|\/manifest|\/img\/|\/modules|\/chunk-|\/fonts|\/css|\/undefined|\/favicon/.test(req.url)          }
+       )   
+      )
+    }
+    
 
 
     // app.use(fileUpload({
@@ -226,12 +238,12 @@ const FileStore = require('session-file-store')(session);
     // the sequence of middlware is important
 
 
-    app.use( (req, res, next) => {
-      console.log(`${moment(new Date()).format("DD MMM YYYY, HH:mm:ss")} ----- ${(req.user) ? req.user.name +"("+req.user.email+")" : "anonymous"} > ${req.path} -----`)
+    // app.use( (req, res, next) => {
+    //   console.log(`${moment(new Date()).format("DD MMM YYYY, HH:mm:ss")} ----- ${(req.user) ? req.user.name +"("+req.user.email+")" : "anonymous"} > ${req.path} -----`)
       
-      // console.log("-----  ", (req.user) ? `${req.user.name} (${req.user.email})` : "anonymous",  " > ", req.path,"  -----")
-      next()
-    })
+    //   // console.log("-----  ", (req.user) ? `${req.user.name} (${req.user.email})` : "anonymous",  " > ", req.path,"  -----")
+    //   next()
+    // })
 
     app.use(swStats.getMiddleware({/*swaggerSpec:swaggerDocument,*/ uriPath:"/metrics", name:"ADE PORTAL"}))
 
