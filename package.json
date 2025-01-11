@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@molfar/amqp-client": "github:wdc-molfar/amqp-client",
     "activity-detector": "^3.0.0",
     "body-parser": "^1.19.0",
     "connect-busboy": "^1.0.0",
