@@ -1,39 +1,36 @@
-const config = require("../config")
-let Resource = require("../models/Resource")
-var mime = require('mime');
-var path = require('path');
-var fs = require("fs");
+const mime = require('mime');
+const path = require('path');
+const fs = require("fs");
 
-const mongo = require("mongodb").MongoClient
+const config = require("../config")
+
+const docdb = require("./utils/docdb")
+const db = require("../.config").docdb
 
 
 const getList = async (req, res) => {
+   res.send([]) 
+  // try {
   
-  let client = await mongo.connect(
-      config.portal.db.uri, 
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-      }
-  )
-  
-  let result = await client.db("dj-portal").collection("resource").aggregate(
-    [{
-      $project: {
-        data: 0
-      }
-    }]
-  ).toArray()
+  //   let result = await docdb.aggregate({
+  //     db,
+  //     collection:"dj-portal.resource",
+  //     pipeline:[]
+  //   })  
 
-  result = result.map( item => ({
-          mime: mime.lookup(path.basename(item.path)),
-          ext: path.parse(item.path).ext.substring(1),
-          url: `./api/resource/${item.path}`,
-          path: item.path,
-          owner: item.owner
-        }))
-        
-  return res.send(result)
+  //   result = result.map( item => ({
+  //           mime: mime.lookup(path.basename(item.path)),
+  //           ext: path.parse(item.path).ext.substring(1),
+  //           url: `./api/resource/${item.path}`,
+  //           path: item.path,
+  //           owner: item.owner
+  //         }))
+          
+  //   res.send(result)
+  
+  // } catch(e) {
+  //   res.status(503).send(e.toString())
+  // }  
 
 }
 
@@ -60,85 +57,88 @@ const getList = async (req, res) => {
 //   }
 
 let get = (req, res)  => {
-    var resourcePath = req.params.path;
-    Resource.findOne({"path":resourcePath})
-    	.then( obj => {
-	      if(!obj){
-	        return res.sendStatus(404);
-	      }
-      res.setHeader('Content-type', mime.lookup(path.basename(obj.path)));
-      return res.send(obj.data);
-    })
+    res.send()
+    // var resourcePath = req.params.path;
+    // Resource.findOne({"path":resourcePath})
+    // 	.then( obj => {
+	   //    if(!obj){
+	   //      return res.sendStatus(404);
+	   //    }
+    //   res.setHeader('Content-type', mime.lookup(path.basename(obj.path)));
+    //   return res.send(obj.data);
+    // })
   }
 
   
 let deleteResource = (req, res) => {
-    resourcePath = req.params.path;
-    Resource.deleteOne({"path":resourcePath})
-    	.then( obj => {
-	      return res.send(obj);
-	    })
+    res.send()
+    // resourcePath = req.params.path;
+    // Resource.deleteOne({"path":resourcePath})
+    // 	.then( obj => {
+	   //    return res.send(obj);
+	   //  })
   }
 
 let rename = (req,res) => {
-    var params = req.body;
-    var oldPath = params.oldPath;
-    var newPath = params.newPath;
-    var app = params.app;
+    res.send()
+    // var params = req.body;
+    // var oldPath = params.oldPath;
+    // var newPath = params.newPath;
+    // var app = params.app;
 
-    Resource.findOne({"path":oldPath})
-    	.then( obj => {
-	      if( !obj ){
-	        return res.send();
-	      } else {
-	        Resource.update({_id:obj.id},{"path":newPath})
-	         .then(() =>{
-	          return res.send();
-	        })
-	      }
-    })
+    // Resource.findOne({"path":oldPath})
+    // 	.then( obj => {
+	   //    if( !obj ){
+	   //      return res.send();
+	   //    } else {
+	   //      Resource.update({_id:obj.id},{"path":newPath})
+	   //       .then(() =>{
+	   //        return res.send();
+	   //      })
+	   //    }
+    // })
     
   }
 
 let update = (req, res) => {
+    res.send()
+    // var app = req.body.app
 
-    var app = req.body.app
+    // let $file = null
+    // if (req.files && req.files.file) {
 
-    let $file = null
-    if (req.files && req.files.file) {
+    //     let fileContent = require("fs").readFileSync(req.files.file.tempFilePath)
 
-        let fileContent = require("fs").readFileSync(req.files.file.tempFilePath)
+    //     $file = {
+    //         name: req.files.file.name,
+    //         binary: fileContent,
+    //         text: fileContent.toString()
+    //     }
 
-        $file = {
-            name: req.files.file.name,
-            binary: fileContent,
-            text: fileContent.toString()
-        }
+    //     filePath = app + "-" + $file.name
 
-        filePath = app + "-" + $file.name
-
-        Resource
-              .findOne({"path":filePath})
-              .then( obj => {
-                if(obj){
-                  Resource
-                    .update({_id:obj.id},{"path":filePath, "data":$file.binary, "owner":"dev"})
-                    // .update({_id:obj.id},{"path":filePath, "data":$file.binary, "owner":req.user.name})
-                    .then( result => {
-                          return res.send(result)
-                    })
-                }else{
-                  Resource
-                    .create({"path":filePath, "data":$file.binary,"owner":"dev"})
-                    // .create({"path":filePath, "data":$file.binary,"owner":req.user.name})
+    //     Resource
+    //           .findOne({"path":filePath})
+    //           .then( obj => {
+    //             if(obj){
+    //               Resource
+    //                 .update({_id:obj.id},{"path":filePath, "data":$file.binary, "owner":"dev"})
+    //                 // .update({_id:obj.id},{"path":filePath, "data":$file.binary, "owner":req.user.name})
+    //                 .then( result => {
+    //                       return res.send(result)
+    //                 })
+    //             }else{
+    //               Resource
+    //                 .create({"path":filePath, "data":$file.binary,"owner":"dev"})
+    //                 // .create({"path":filePath, "data":$file.binary,"owner":req.user.name})
                     
-                    .then(obj => {
-                          return res.send(obj)
-                  })
-                }    
-              })
+    //                 .then(obj => {
+    //                       return res.send(obj)
+    //               })
+    //             }    
+    //           })
 
-    }
+    // }
 }        
 
 

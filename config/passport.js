@@ -1,9 +1,47 @@
 // import all the things we need  
 const GoogleStrategy = require('passport-google-oauth20').Strategy
-const mongoose = require('mongoose')
+// const mongoose = require('mongoose')
 const config = require("./portal")
-const User = require('../models/User')
+// const User = require('../models/User')
 const { extend } = require("lodash")
+
+
+const docdb = require("../routes/utils/docdb")
+const db = require("../.config").docdb
+
+const find = async email => {
+    let result = await docdb.aggregate({
+        db,
+        collection: "dj-portal.user",
+        pipeline:[{$match:{email}}, {$project: {_id: 0}}]
+    })
+    result = result[0]
+    return result
+}
+
+const update = async data => {
+    
+    await docdb.updateOne({
+        db,
+        collection: "dj-portal.user",
+        filter: {email: data.email},
+        data
+    })
+    let result = await find(data.email)   
+}
+
+const create = async data => {
+    
+    await docdb.replaceOne({
+        db,
+        collection: "dj-portal.user",
+        filter: {email: data.email},
+        data
+    })
+
+    let result = await find(data.email)   
+}
+
 
 module.exports = {
     passport: passport => {
@@ -23,35 +61,20 @@ module.exports = {
                         email: profile.emails[0].value
                     }
 
-                    // console.log("newUser", newUser)
+                    console.log("!!!! newUser", newUser)
 
                     try {
                         //find the user in our database 
-                        let user = await User.findOne({ email: newUser.email })
+                        let user = await find(newUser.email)
 
                         if (user) {
-                            
-                            //If user present in our database.
-                            
-                            await User.updateOne (
-                                { email: newUser.email }, 
-                                {
-                                    $set: {
-                                        name: newUser.name || user.name,
-                                        photo: newUser.photo || user.photo
-                                    }
-                                }
-                            )
-
-                            user = await User.findOne({ email: newUser.email })
-                            // console.log("user",user)
-                            
+                            user = await update(newUser)
                             done(null, user)
 
                         } else {
                             // if user is not preset in our database save user data to database.
                             newUser.isAdmin = config.portal.administrators.includes(newUser.email)
-                            user = await User.create(newUser)
+                            user = await create(newUser)
                             done(null, user)
                         }
                     } catch (err) {
@@ -63,13 +86,16 @@ module.exports = {
 
         // used to serialize the user for the session
         passport.serializeUser((user, done) => {
-            done(null, user.id)
+            console.log("serializeUser", user)
+            done(null, user.email)
         })
 
         // used to deserialize the user
-        passport.deserializeUser((id, done) => {
+        passport.deserializeUser( async (email, done) => {
             try {
-                User.findById(id, (err, user) => done(err, user))
+                let user = await find(email)
+                console.log("deserializeUser", user)
+                done(null, user)
             } catch(e){
                 console.log(e.toString())
                 done(e, null)

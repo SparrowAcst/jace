@@ -45,7 +45,9 @@ module.exports = {
         applications:[
           "./apps/JACE.json",
           "./apps/JACE-Bootstrap.json"
-        ]
+        ],
+
+        defaultApp: "RWA"
 
     }
 

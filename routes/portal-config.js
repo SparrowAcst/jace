@@ -1,33 +1,48 @@
 const config = require("../config")
-let PortalConfig = require("../models/PortalConfig")
+
+const docdb = require("./utils/docdb")
+const db = require("../.config").docdb
 
 
 
-let getConfig = (req, res) => {
-    PortalConfig.find({})
-        .then(function(config) {
-            return res.send(config[0].value)
+let getConfig = async (req, res) => {
+    
+    try {
+        
+        let result = await docdb.aggregate({
+            db,
+            collection: "dj-portal.portalconfig",
+            pipeline:[{$project:{_id: 0}}]
         })
-        .catch(err => {
-            console.log('Portal config not available ' + err);
-            res.status(503).send(err)
-        })
-
+        result = result[0]
+        res.send(result.value)
+    
+    } catch(e) {
+        
+        res.status(503).send(e.toString())
+    
+    }    
+ 
 }
 
-let setConfig = (req, res) => {
-    var config = req.body.config;
-    PortalConfig.updateOne({}, { value: config })
-        .then(updatedConfig => {
-            return res.send(updatedConfig)
-        })
-        .catch(err => {
-            console.log('Portal config update faillure ' + err);
-            res.status(503).send(err)
-        })
+let setConfig = async (req, res) => {
+    
+    try {
+    
+        await docdb.updateOne({
+            db,
+            collection: "dj-portal.portalconfig",
+            filter:{},
+            data: { value: config } 
+        })    
+    
+    } catch(e){
+ 
+        res.status(503).send(e.toString())
+ 
+    }
+
 }
-
-
 
 
 const router = require('express').Router()

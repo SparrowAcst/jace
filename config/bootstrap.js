@@ -5,11 +5,11 @@ const { sseMiddleware } = require('express-sse-middleware')
 const cookieParser = require('cookie-parser')
 const fileUpload = require('express-fileupload');
 const morgan = require("morgan");
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 const passport = require('passport')
 const session = require('express-session')
 const multipart = require('connect-multiparty')
-const MongoStore = require('connect-mongo')(session)
+// const MongoStore = require('connect-mongo')(session)
 const swStats = require('swagger-stats')
 const moment = require("moment")
 
@@ -27,78 +27,38 @@ const config = require("./index")
 const STATIC_FILE_PATTERN = /\.[^.\/]*$/g
 
 
-const AppConfig = require("../models/AppConfig")
-const PortalConfig = require("../models/PortalConfig")
-const User = require("../models/User")
+const docdb = require("../routes/utils/docdb")
+const db = require("../.config").docdb
 
 
-let addDefaultAppConfigs = ()  => {
+// const AppConfig = require("../models/AppConfig")
+// const PortalConfig = require("../models/PortalConfig")
+// const User = require("../models/User")
 
-  let apps = config.portal.applications.map( app => require(app))
-  return Promise.all( apps.map( app => {
+
+const stringify = app => {
     if ( app.appWidgets ) app.appWidgets = app.appWidgets.map( w => JSON.stringify(w))
     if ( app.pages ) app.pages = app.pages.map( p => JSON.stringify(p))
-    return AppConfig.findOrCreate({name: app.name}, app)
-            .then( () => {
-              console.log(`** Install app "${app.name}"`)
-              return true
-            })
-            .catch( err => {
-              console.log(`Cannot install app "${app.name}": ${err.toString()}`)
-            })  
+      return app
+  }
+
+let addDefaultAppConfigs = async () => {
+
+  let apps = config.portal.applications.map( app => require(app))
+  
+  await Promise.all( apps.map( app => {
+
+    app = stringify(app)
+    return docdb.replaceOne({
+      db,
+      collection: "dj-portal.appconfig",
+      filter: { name: app.name },
+      data: app
+    })
+  
   }))
 
 }
-
-let addDefaultPortalConfigs = ()  => PortalConfig.findOne({})
-  .then( config => {
-    console.log("CONFIG",config)
-    let data = extend(
-      {},
-      (config) ? config.value : {}, 
-      {
-        defaultApp:config.value.defaultApp || "JACE", 
-        pubService:"http://localhost:8081"
-      }
-    )
-    console.log("LOAD\n"+YAML.dump(data))
-    return data
-  })
-  .then( config => PortalConfig.findOrCreate({}, {value:config})
-      .then( () => {
-        console.log(`** Update portal config: ${JSON.stringify(config,null," ")}`)
-        return true
-      })
-  )
-  .catch( err => {
-    console.log(`Cannot update portal config: ${err.toString()}`)
-  })
-
-let checkDefaultAdmins = () => Promise.all( config.portal.administrators.map( admin => new Promise((resolve, reject) => {
-    
-    User.findOne({email: admin})
-    .then( user => {
-      if(!user) {
-        resolve(true)
-        return
-      }
-
-      if( user.isAdmin) {
-        console.log(`** Check adminstrator privilegues for ${admin}`)
-        resolve(true)
-      } else {
-        User.update({email: admin}, {isAdmin: true})
-        .then( () => {
-            console.log("** Update administrator privilegues for " + admin)
-            resolve(true)
-        });    
-      }
-    })
-    .catch( err => {
-      console.log(`Cannot check administrator privilegues: ${err.toString()}`)
-      reject(err)
-    })
-})))  
 
 const getEnv = () => {
   const keys = ["APP_HOST", "APP_PROTOCOL","ATLAS_URL","MONGO_URI","GOOGLE_CLIENT_ID","GOOGLE_CLIENT_SECRET","GOOGLE_CALLBACK",]
@@ -110,16 +70,16 @@ const getEnv = () => {
 }
 
 
-let configureServer = () => {
+let configureServer = async () => {
+
   console.log("** Starts portal configuration")
   console.log("** Environment Variables **")
   console.table(getEnv())
   console.log("** Configutarion **")
   console.log(YAML.dump(JSON.parse(JSON.stringify(config))))
   
-  return checkDefaultAdmins()
-    .then( () => addDefaultAppConfigs())
-    .then( () => addDefaultPortalConfigs())
+  await addDefaultAppConfigs()
+
 }
 
 
@@ -144,15 +104,13 @@ const loadPlugins = async app => {
 module.exports = async () => {
     var app = express();
 
-
-    await mongoose.connect(config.portal.db.uri, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    })
+    // await mongoose.connect(config.portal.db.uri, {
+    //     useNewUrlParser: true,
+    //     useUnifiedTopology: true
+    // })
 
     // Passport config
     config.passport(passport)
-
 
 
     // Middleware
@@ -170,9 +128,9 @@ const FileStore = require('session-file-store')(session);
             secret: 'keyboard cat',
             resave: false,
             saveUninitialized: false,
-            // store: new FileStore({
-            //   path:"./.sessions"
-            // })
+            store: new FileStore({
+              path:"./.sessions"
+            })
         })
     ) 
 
@@ -280,7 +238,9 @@ const FileStore = require('session-file-store')(session);
     console.log("** Use static:", path.resolve(config.portal.staticPath))
     app.use(express.static(path.resolve(config.portal.staticPath)))
     
-    
-    return configureServer()
-      .then(() => app)
+    await configureServer()
+
+    return app
+    // return configureServer()
+    //   .then(() => app)
 }
