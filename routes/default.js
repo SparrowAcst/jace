@@ -11,9 +11,9 @@ const APP_CACHE = require("./app-cache")
 
 let requestHandler = async (req, res, next) => {
     
-    console.log("DEFAULT:", req.user)
+    // console.log("DEFAULT:", req.user, req.params)
 
-    console.log(req.params.appName, config.portal.defaultApp)
+    // console.log(req.params.appName, config.portal.defaultApp)
 
     let app = await APP_CACHE.get(req.params.appName || config.portal.defaultApp)
 
@@ -51,7 +51,7 @@ let requestHandler = async (req, res, next) => {
         `
     } else {
         script += `
-        localStorage.setItem("jace__${app.name}_query",JSON.stringify(${JSON.stringify(query)}))
+        localStorage.setItem("jace__${app.name}_query",JSON.stringify(${JSON.stringify(req.query)}))
         window["${app.name}_query"] = JSON.parse(localStorage.getItem("jace__${app.name}_query"))
         `
     }

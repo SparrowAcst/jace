@@ -27,7 +27,8 @@ const update = async data => {
         filter: {email: data.email},
         data
     })
-    let result = await find(data.email)   
+    let result = await find(data.email)
+    return  result   
 }
 
 const create = async data => {
@@ -39,7 +40,8 @@ const create = async data => {
         data
     })
 
-    let result = await find(data.email)   
+    let result = await find(data.email)
+    return result   
 }
 
 
@@ -61,22 +63,29 @@ module.exports = {
                         email: profile.emails[0].value
                     }
 
-                    console.log("!!!! newUser", newUser)
+                    // console.log("!!!! newUser", newUser)
 
                     try {
                         //find the user in our database 
                         let user = await find(newUser.email)
-
-                        if (user) {
-                            user = await update(newUser)
-                            done(null, user)
-
-                        } else {
-                            // if user is not preset in our database save user data to database.
-                            newUser.isAdmin = config.portal.administrators.includes(newUser.email)
+                        if(!user){
                             user = await create(newUser)
-                            done(null, user)
                         }
+                        
+                        // console.log("!!!", user)
+                        // if (user) {
+                        //     user = await update(newUser)
+                        //     console.log("!!!!!!!!!",user)
+                            done(null, user)
+
+                        // } else {
+                        //     // if user is not preset in our database save user data to database.
+                        //     newUser.isAdmin = config.portal.administrators.includes(newUser.email)
+                        //     user = await create(newUser)
+                        //     console.log("--------",user)
+
+                        //     done(null, user)
+                        // }
                     } catch (err) {
                         console.error(err)
                     }
@@ -86,15 +95,15 @@ module.exports = {
 
         // used to serialize the user for the session
         passport.serializeUser((user, done) => {
-            console.log("serializeUser", user)
+            // console.log("serializeUser", user)
             done(null, user.email)
         })
 
         // used to deserialize the user
-        passport.deserializeUser( async (email, done) => {
+        passport.deserializeUser( async (id, done) => {
             try {
-                let user = await find(email)
-                console.log("deserializeUser", user)
+                let user = await find(id)
+                // console.log("deserializeUser", user)
                 done(null, user)
             } catch(e){
                 console.log(e.toString())

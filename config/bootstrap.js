@@ -120,7 +120,7 @@ module.exports = async () => {
 
     // app.set('view engine', 'ejs');
 
-const FileStore = require('session-file-store')(session);
+// const FileStore = require('session-file-store')(session);
  
 
     app.use(
@@ -128,9 +128,9 @@ const FileStore = require('session-file-store')(session);
             secret: 'keyboard cat',
             resave: false,
             saveUninitialized: false,
-            store: new FileStore({
-              path:"./.sessions"
-            })
+            // store: new FileStore({
+            //   path:"./.sessions"
+            // })
         })
     ) 
 
