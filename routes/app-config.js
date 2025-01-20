@@ -132,7 +132,7 @@ let update = async (req, res) => {
 
         await APP_CACHE.set(updatedApp.name, updatedApp)
 
-        res.send(200)
+        res.status(200).send()
     } catch (e) {
         res.status(503).send(e.toString())
     }

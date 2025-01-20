@@ -9,6 +9,9 @@ const { extend } = require("lodash")
 const docdb = require("../routes/utils/docdb")
 const db = require("../.config").docdb
 
+const USER_CACHE = require("../routes/user-cache")
+
+
 const find = async email => {
     let result = await docdb.aggregate({
         db,
@@ -67,9 +70,10 @@ module.exports = {
 
                     try {
                         //find the user in our database 
-                        let user = await find(newUser.email)
+                        let user = await USER_CACHE.get(newUser.email)
                         if(!user){
-                            user = await create(newUser)
+                            await USER_CACHE.set(newUser.email, newUser)
+                            user = await USER_CACHE.get(newUser.email)
                         }
                         
                         // console.log("!!!", user)
@@ -102,7 +106,7 @@ module.exports = {
         // used to deserialize the user
         passport.deserializeUser( async (id, done) => {
             try {
-                let user = await find(id)
+                let user = await USER_CACHE.get(id)
                 // console.log("deserializeUser", user)
                 done(null, user)
             } catch(e){

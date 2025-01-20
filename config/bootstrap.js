@@ -72,11 +72,11 @@ const getEnv = () => {
 
 let configureServer = async () => {
 
-  console.log("** Starts portal configuration")
-  console.log("** Environment Variables **")
-  console.table(getEnv())
-  console.log("** Configutarion **")
-  console.log(YAML.dump(JSON.parse(JSON.stringify(config))))
+  // console.log("** Starts portal configuration")
+  // console.log("** Environment Variables **")
+  // console.table(getEnv())
+  // console.log("** Configutarion **")
+  // console.log(YAML.dump(JSON.parse(JSON.stringify(config))))
   
   await addDefaultAppConfigs()
 
@@ -92,7 +92,7 @@ const loadPlugins = async app => {
     let routes = config.portal.plugins[plugin]
     if( isObject(routes) && routes.init){
       routes = await routes.init()
-      console.log(`** Load plugin: ${plugin}`, routes.stack.map( d => d.regexp))
+      console.log(`** Load plugin: ${plugin}`) //, routes.stack.map( d => d.regexp))
        app.use(plugin,  routes )
     }
   }

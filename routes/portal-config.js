@@ -35,6 +35,8 @@ let setConfig = async (req, res) => {
             filter:{},
             data: { value: config } 
         })    
+        
+        res.send()
     
     } catch(e){
  
