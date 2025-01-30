@@ -14,11 +14,13 @@ bower_components/
 jace-front/
 jace-dps/
 harvest-controller/
+ade-controller/
 sync-data/
 report-builder/
 ade-lms/
 ade-patient-story/
-ade-clinic
+ade-clinic/
+
 
 .tmp.zip
 
