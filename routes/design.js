@@ -18,6 +18,7 @@ let requestHandler = async (req, res, next) => {
 
     if (!app) {
         res.status(404).send("Application not found.")
+        
         return
         // app = await APP_CACHE.get(config.defaultApp)
     }
