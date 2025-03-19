@@ -280,7 +280,11 @@ const FileStore = require('session-file-store')(session);
     console.log("** Use static:", path.resolve(config.portal.staticPath))
     app.use(express.static(path.resolve(config.portal.staticPath)))
     
-    
+    app.use((error, req, res, next) => {
+      console.log(`ERROR occurred: ${error.toString()} ${error.stack}`);
+      res.status(500).send(`${error.toString()} ${error.stack}`);
+    })
+
     return configureServer()
       .then(() => app)
 }
