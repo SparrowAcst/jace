@@ -219,12 +219,12 @@ const FileStore = require('session-file-store')(session);
     app.use(bodyParser.text());
     app.use(bodyParser.urlencoded({
         parameterLimit: 100000,
-        limit: '50mb',
+        limit: '100mb',
         extended: true
     }));
 
     app.use(bodyParser.json({
-        limit: '50mb'
+        limit: '100mb'
     }));
 
     app.use(busboy())

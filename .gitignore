@@ -18,6 +18,7 @@ report-builder/
 ade-lms/
 ade-patient-story/
 ade-clinic
+ade-controller
 
 .tmp.zip
 
